@@ -1,0 +1,15 @@
+<div data-dojo-attach-point="cardNode" class="esri-card" role="presentation">
+  <div data-dojo-attach-point="panelNode" class="panel">
+  	<div data-dojo-attach-point="bgNode" class="bg shadow" style="background-color: ${color}">
+  	<div data-dojo-attach-point="labelNode" class="label">${label}</div>
+	<div data-dojo-attach-point="mainNode" class="main">
+		<div data-dojo-attach-point="iconNode" class="icon" style="background-image: url(${icon})"  data-dojo-attach-event="onclick:toggle"></div>
+		<div data-dojo-attach-point="summaryNode" class="summary"></div>
+		<div data-dojo-attach-point="sublabelNode" class="sublabel">${sublabel}</div>
+	</div>
+	<div data-dojo-attach-point="detailsNode" class="details">
+		<div data-dojo-attach-point="infoNode" class="info"></div>
+	</div>
+	<div data-dojo-attach-point="toggleNode" class="toggle" data-dojo-attach-event="onclick:toggle"></div>
+  </div>
+</div>

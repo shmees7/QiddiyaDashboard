@@ -1,0 +1,29 @@
+var buildingOccupancyData = [{
+    "id": 1,
+    "lon": -73.938074111938,
+    "lat": 40.791426775125,
+    "label": "NOT OCCUPIED",
+    "value": 1630,
+    "desc": "18.6%"
+}, {
+    "id": 2,
+    "lon": -73.931550979614,
+    "lat": 40.800426144169,
+    "label": "SEMI OCCUPIED",
+    "value": 1520,
+    "desc": "17.6%"
+},{
+    "id": 3,
+    "lon": -73.97828578949,
+    "lat": 40.735974167244,
+    "label": " FULLY OCCUPIED",
+    "value": 4570,
+    "desc": "52.9%"
+}, {
+    "id": 4,
+    "lon": -73.969488143921,
+    "lat": 40.748037258303,
+    "label": "UNDER CONSTRUCTION",
+    "value": 914,
+    "desc": "10.5%"
+}]

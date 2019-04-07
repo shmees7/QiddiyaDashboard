@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="fragment" content="!">
+    <!-- Define the versions of IE that will be used to render the page. See Microsoft documentation for details. Optional. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <!-- End Responsive -->
+    <!-- Load any application specific styles -->
+    <!-- <link rel="stylesheet" href="//js.arcgis.com/4.2/dijit/themes/claro/claro.css"> -->
+    <link rel="stylesheet" href="https://js.arcgis.com/4.3/esri/css/main.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/4.10/esri/css/main.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/4.10/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="Stylesheet" type="text/css" href="js/widgets/Card/css/Card.css">
+    <link rel="Stylesheet" type="text/css" href="js/widgets/SmartTip/css/SmartTip.css">
+</head>
+
+<body class="app-loading">
+
+    <!-- PANEL SYM -->
+    <canvas id="panelSym"></canvas>
+
+    <!-- PANEL MAIN -->
+    <div id="panelMain">
+        <div id="panelView"></div>
+        <div id="controls">
+            <input type="radio" id="solidEdges" name="edges"> <label for="solidEdges">Solid
+                edges</label>
+            <input type="radio" id="sketchEdges" name="edges"> <label for="sketchEdges">Sketch
+                edges</label>
+            <input type="radio" id="noEdges" name="edges" checked><label for="noEdges">No edges</label>
+        </div>
+        <div id="measureTools">
+            <button class="action-button esri-icon-minus" id="distanceButton" type="button" title="Measure distance between two points"></button>
+            <button class="action-button esri-icon-polygon" id="areaButton" type="button" title="Measure area"></button>
+        </div>
+        <div id="renderers">
+            <input type="radio" id="buildingOccupancy" name="renderers" checked> <label for="buildingOccupancy">Building
+                Occupancy</label>
+            <input type="radio" id="constructionYear" name="renderers"> <label for="constructionYear">Construction Year</label>
+        </div>
+        <div id="containerDiv"><span id="title">Construction Year</span>
+            <div id="slider"></div>
+        </div>
+        <div id="color_container">
+            <ul>
+                <li><input type="color" id="under_construction"> Under Construction</input></li>
+                <li><input type="color" id="semi_occupied"> Semi Occupied</input></li>
+                <li><input type="color" id="not_occupied"> Not Occupied</input></li>
+                <li><input type="color" id="fully_occupied"> Fully Occupied</input></li>
+                <li><input type="color" id="others"> Others</input></li>
+            </ul>
+            <button id="applySettingsBtn"> Apply </button>
+            <button id="resetSettingsBtn"> Reset </button>
+        </div>
+    </div>
+
+    <!-- PANEL TOP -->
+    <div id="panelTop">
+        <img src="images/logo.png" alt="Qiddiya" height="80" width="85">
+        <div id="panelHeader">
+            <div id="panelTitle">Qiddiya <span class='light'>Geo-Dashboard</span></div>
+            <div id="btnPlay"></div>
+        </div>
+        <div id="panelDate"></div>
+        <div id="panelCredits">Source: K&A - ESRI</div>
+
+    </div>
+
+    <!-- PANEL TIP -->
+    <div id="panelSmartTip"></div>
+
+    <!-- PANEL BOTTOM -->
+    <div id="panelBottom">
+        <div id="panelCards">
+
+        </div>
+    </div>
+
+    <!-- PANEL LOADING -->
+    <div class="loading-indicator">
+        <span class="big">Qiddiya </span><span class="big light">Geo-Dashboard</span>
+        <div class="loading-message" id="loading_message"></div>
+    </div>
+
+    <div class="" style="top: 330px;left: 10px;position:  absolute;" data-dojo-attach-event="onclick:toggle">
+        <img id="carsDisplayImg" src="images/car.png" alt="Qiddiya" height="80" width="85" style="width: 30px; height: 30px; color: black; background-color:  black;">
+    </div>
+
+    <!-- Data load section -->
+    <script type="text/javascript" src="./data/accidents.js"></script>
+    <script type="text/javascript" src="./data/airquality.js"></script>
+    <script type="text/javascript" src="./data/cameras.js"></script>
+    <script type="text/javascript" src="./data/cyclist.js"></script>
+    <script type="text/javascript" src="./data/motorist.js"></script>
+    <script type="text/javascript" src="./data/pedestrian.js"></script>
+    <script type="text/javascript" src="./data/traffic.js"></script>
+    <script type="text/javascript" src="./data/weather.js"></script>
+    <script type="text/javascript" src="./data/buildings.js"></script>
+
+    <script type="text/javascript">
+        var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+        var dojoConfig = {
+            // The locationPath logic below may look confusing but all its doing is
+            // enabling us to load the api from a CDN and load local modules from the correct location.
+            packages: [{
+                name: "application",
+                location: package_path + '/js'
+            }, {
+                name: "data",
+                location: package_path + "/js/data"
+            }, {
+                name: "effects",
+                location: package_path + "/js/effects"
+            }, {
+                name: "widgets",
+                location: package_path + "/js/widgets"
+            }]
+        };
+    </script>
+    <script src="https://js.arcgis.com/4.10/"></script>
+    <script src="./lib/three.js"></script>
+    <script type="text/javascript">
+        require([
+            "dojo/io-query",
+            "application/config",
+            "application/main",
+            "dojo/parser"
+        ], function (
+            ioQuery,
+            config,
+            Main,
+            parser
+        ) {
+                // process url parameters
+                var url = document.location.href;
+                var query = url.substring(url.indexOf("?") + 1, url.length);
+                if (query.length > 0) {
+                    var queryObject = ioQuery.queryToObject(query);
+                    if (queryObject.org && queryObject.org !== "") {
+                        var org = queryObject.org.toLowerCase();
+                    }
+                    if (queryObject.color) {
+                        config.color = queryObject.color;
+                    }
+                }
+                parser.parse();
+                var app = new Main();
+                app.startup(config);
+            });
+    </script>
+</body>
+
+</html>
